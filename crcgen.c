@@ -2,7 +2,7 @@
  Generation of CRC lookup table
  as used in Perl module "String::CRC32"
 
- 1999 by Soenke J. Peters <peters@simprovement.com>
+ 1999 by Soenke J. Peters <peters__perl@opcenter.de>
 */
 
 #include <stdio.h>

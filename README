@@ -4,7 +4,7 @@ Perl Module String::CRC32
 This packages provides a perl module to generate checksums from strings
 and from files.
 
-Written 19990310 by Soenke J. Peters <peters@simprovement.com>.
+Written 19990310 by Soenke J. Peters <peters__perl@opcenter.de>.
 
 The checksums are the same as those calculated by ZMODEM, PKZIP,
 PICCHECK and many others.
