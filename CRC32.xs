@@ -125,9 +125,11 @@ crc32(data, ...)
     PREINIT:
 	U32 crcinit = 0;
     STRLEN data_len;
-    CODE:
+    PPCODE:
 	int sv_type;
-	IO * io;
+	IO *io;
+	SV *sv;
+	U32 rv = 0;
       {
 #ifdef GENTABLE
 	crcgen();
@@ -144,13 +146,15 @@ crc32(data, ...)
 	if (sv_type == SVt_PVGV)
 	  {
 		io = sv_2io(ST(0));
-		RETVAL = getcrc_fp(IoIFP(io), crcinit);
+		rv = getcrc_fp(IoIFP(io), crcinit);
 	  }
 	else
 	  {
 		data = (char *)SvPV(ST(0),data_len);
-		RETVAL = getcrc(data, data_len, crcinit);
+		rv = getcrc(data, data_len, crcinit);
 	  }
+	EXTEND(sp, 1);
+	sv = newSV(0);
+	sv_setuv(sv, (UV)rv);
+	PUSHs(sv_2mortal(sv));
       }
-    OUTPUT:
-	RETVAL
