@@ -1,5 +1,5 @@
 /*
-Perl Extension for CRC computations
+Perl Extension for 32bit CRC computations
 */
 
 #include "EXTERN.h"
@@ -13,7 +13,7 @@ Perl Extension for CRC computations
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 unsigned long 
 crcTable[256];
@@ -39,12 +39,12 @@ crcgen( void )
 }
 
 unsigned long 
-getcrc(char *c, int len)
+getcrc(char *c, int len, unsigned long crcinit)
 {
     register unsigned long crc;
     char     *e = c + len;
 
-    crc = 0xFFFFFFFF;
+    crc = crcinit^0xFFFFFFFF;
     while (c < e) {
         crc = ((crc >> 8) & 0x00FFFFFF) ^ crcTable[ (crc^ *c) & 0xFF ];
         ++c;
@@ -58,24 +58,21 @@ MODULE = String::CRC32		PACKAGE = String::CRC32
 VERSIONCHECK: DISABLE
 PROTOTYPES: DISABLE 
 
-void
-crc32(data)
+unsigned long
+crc32(data, ...)
+    char *data = NO_INIT
     PREINIT:
-	int data_len;
-    INPUT:
-	char *data = (char *)SvPV(ST(0),data_len);
-    PPCODE:
-	{
-		unsigned long 	crc32;
-		U32		*rv;
-		SV		*sv;
-
-		crcgen();
-		crc32 = getcrc(data, data_len);
-		EXTEND(sp, 1);
-		sv = newSV(0);
-		sv_setuv(sv, (UV)crc32);
-		PUSHs(sv_2mortal(sv));
-	}
-
-
+	unsigned long crcinit = 0;
+    STRLEN data_len;
+    CODE:
+	data = (char *)SvPV(ST(0),data_len);
+	crcgen();
+	/* Horst Fickenscher <horst_fickenscher@sepp.de> mailed me that it
+	   could be useful to supply an initial value other than 0, e.g.
+	   to calculate checksums of big files without the need of keeping
+	   them comletely in memory */
+	if ( items > 1 )
+		crcinit = (unsigned long) SvNV(ST(1));
+	RETVAL = getcrc(data, data_len, crcinit);
+     OUTPUT:
+	RETVAL

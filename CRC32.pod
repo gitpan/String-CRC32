@@ -7,6 +7,7 @@ CRC32 - Perl interface cyclic redundency check generation
     use String::CRC32;
     
     $crc = crc32("some string");
+    $crc = crc32("some string", initvalue);
 
 =head1 DESCRIPTION
 
@@ -14,15 +15,29 @@ The B<CRC32> module calculates CRC of 32 bit lenghts.
 It generates the same CRC values as ZMODEM, PKZIP, PICCHECK and
 many others.
 
+=head1 EXAMPLE
+
+    $crc = crc32("some string");
+
+  results in the same as
+
+    $crc = crc32(" string", crc32("some"));
+
+This is useful for subsequent CRC checking of substrings.
+
 =head1 AUTHOR
 
 Soenke J. Peters <peters@simprovement.com>
+
+Please be so kind as to report any bugs/suggestions to the above address.
 
 =head1 COPYRIGHT
 
 CRC algorithm code taken from CRC-32 by Craig Bruce. 
 The module stuff is inspired by a similar perl module called 
 String::CRC by David Sharnoff & Matthew Dillon.
+Horst Fickenscher told me that it could be useful to supply an init
+value to the crc checking function and so I included this possibility.
 
 The author of this package disclaims all copyrights and 
 releases it into the public domain.
