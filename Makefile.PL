@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
 	'NAME' => 'String::CRC32',
 	'DISTNAME' => 'String-CRC32',
-	'VERSION' => '1.0',
+	'VERSION' => '1.1',
 	'OBJECT' => 'CRC32.o',
 	'dist'   => {COMPRESS=>'gzip', SUFFIX=>'gz'}
 );

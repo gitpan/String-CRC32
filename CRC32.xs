@@ -16,13 +16,13 @@
 #include <string.h>
 
 #ifdef GENTABLE
-unsigned long 
+U32 
 crcTable[256];
 
 void
 crcgen( void )
 {
-    unsigned long crc, poly;
+    U32 crc, poly;
     int     i, j;
 
     poly = 0xEDB88320L;
@@ -39,7 +39,7 @@ crcgen( void )
     }
 }
 #else /* GENTABLE */
-unsigned long
+U32
 crcTable[256] = {
 0x0, 0x77073096, 0xee0e612c, 0x990951ba, 0x76dc419, 0x706af48f, 0xe963a535, 0x9e6495a3,
 0xedb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988, 0x9b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91,
@@ -76,10 +76,10 @@ crcTable[256] = {
 };
 #endif /* GENTABLE */
 
-unsigned long 
-getcrc(char *c, int len, unsigned long crcinit)
+U32 
+getcrc(char *c, int len, U32 crcinit)
 {
-    register unsigned long crc;
+    register U32 crc;
     char     *e = c + len;
 
     crc = crcinit^0xFFFFFFFF;
@@ -90,10 +90,10 @@ getcrc(char *c, int len, unsigned long crcinit)
     return( crc^0xFFFFFFFF );
 }
 
-unsigned long
-getcrc_fp( PerlIO *fp, unsigned long crcinit )
+U32
+getcrc_fp( PerlIO *fp, U32 crcinit )
 {
-    register unsigned long crc;
+    register U32 crc;
     int     c;
 
     crc = crcinit^0xFFFFFFFF;
@@ -119,11 +119,11 @@ MODULE = String::CRC32		PACKAGE = String::CRC32
 VERSIONCHECK: DISABLE
 PROTOTYPES: DISABLE 
 
-unsigned long
+U32
 crc32(data, ...)
     char *data = NO_INIT
     PREINIT:
-	unsigned long crcinit = 0;
+	U32 crcinit = 0;
     STRLEN data_len;
     CODE:
 	int sv_type;
@@ -137,7 +137,7 @@ crc32(data, ...)
 	   to calculate checksums of big files without the need of keeping
 	   them comletely in memory */
 	if ( items > 1 )
-		crcinit = (unsigned long) SvNV(ST(items - 1));
+		crcinit = (U32) SvNV(ST(items - 1));
 
 	sv_type = getsvtype(ST(0));
 
