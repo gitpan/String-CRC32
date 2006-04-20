@@ -6,7 +6,7 @@ require DynaLoader;
 
 @ISA = qw(Exporter DynaLoader);
 
-$VERSION = 1.3;
+$VERSION = 1.4;
 
 # Items to export into callers namespace by default
 @EXPORT = qw(crc32);

@@ -90,15 +90,21 @@ getcrc(char *c, int len, U32 crcinit)
     return( crc^0xFFFFFFFF );
 }
 
+#define BUFSIZE 32768
+
 U32
 getcrc_fp( PerlIO *fp, U32 crcinit )
 {
     register U32 crc;
-    int     c;
+    register U16 len;
+    unsigned char buf[BUFSIZE];
 
     crc = crcinit^0xFFFFFFFF;
-    while( (c=PerlIO_getc(fp)) != EOF ) {
-        crc = ((crc>>8) & 0x00FFFFFF) ^ crcTable[ (crc^c) & 0xFF ];
+    while((len = PerlIO_read(fp, buf, BUFSIZE)) > 0 ) {
+        unsigned char * p = buf;
+        do {
+	    crc = ((crc >> 8) & 0x00FFFFFF) ^ crcTable[(unsigned char)( (crc & 0xff) ^ *(p++) )];
+	} while (--len);
     }
     return( crc^0xFFFFFFFF );
 }

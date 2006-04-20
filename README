@@ -19,6 +19,8 @@ Installation:
    "make install"
 
 If you find any bugs, please send me a good description (or a patch ;-) ).
+Thanks to s0lar(at)gmx.li who sent me a patch to replace PerlIO_getc with
+PerlIO_read to improve performance.
 
 Have fun,
     Soenke J. Peters
