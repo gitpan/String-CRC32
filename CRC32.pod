@@ -13,6 +13,7 @@ String::CRC32 - Perl interface for cyclic redundency check generation
     $crc = crc32($somestring);
 
     open(SOMEFILE, "location/of/some.file");
+    binmode SOMEFILE;
     $crc = crc32(*SOMEFILE);
     close(SOMEFILE);
 
@@ -38,6 +39,7 @@ This is useful for subsequent CRC checking of substrings.
 You may even check files:
 
     open(SOMEFILE, "location/of/some.file");
+    binmode SOMEFILE;
     $crc = crc32(*SOMEFILE);
     close(SOMEFILE);
 
